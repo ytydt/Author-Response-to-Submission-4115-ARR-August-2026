@@ -44,7 +44,7 @@ Scores are from the arena.ai English text leaderboard (2 Sep 2026); leaderboard 
 7. **DD-lite hold-out**: gates frozen on Math Pro and applied without retuning to two held-out SuperGPQA calculation sets, one with the mid-tier successor pool and one with the current fast-tier pool.
 8. **Role-free, self-assigned-role, and single-call inline-role topology controls on the current fast-tier pool**, with decomposition, write-back, and refresh held fixed: a symmetric role-free subtask debate and a self-assigned-role variant each score 6.7 pp below DD; inlining the role sequence into one call scores 8.9 pp below DD and reproduces the guide's Round-0 answers item for item; agents disagree spontaneously on 99% of subtasks but repair 2.8% of initially wrong items where DD repairs 11.1%.
 9. **Statistical protocol corrections**: the Appendix C.2.3 interval, the per-dataset McNemar entry, and the Table F.2 tok/pp value; the primary inferential claim is placed at the cross-dataset layer, where it is fully reproducible.
-10. **Terminology, naming, and release**: a single name per dataset/setting, MedxpertQA-R introduced as a control-only set, and an anonymized repository with prompts, routing tables, per-question outputs, and scoring scripts.
+10. **Terminology, naming**: a single name per dataset/setting, MedxpertQA-R introduced as a control-only set.
 
 ---
 
@@ -67,8 +67,6 @@ Brackets are item-clustered 95% bootstrap intervals. The DD-minus-SoM *interacti
 We read this as **complementarity in the published pool**: diversity supplies candidate variation; local candidate construction and adjudication convert it into consequential state. Giving the same three models to a whole-answer protocol does not reproduce DD's result, and giving DD a single model removes the variation it is designed to convert. This also answers the ensemble reading of DD: pool-matched SoM and pool-matched DT×2 (same three families, 45K tok/q) remain below DD by +4.5 / +5.0 and +6.8 / +9.0 pp respectively; on items that all three backbones solve incorrectly in Round 0, DD still recovers 30% / 67% versus 15% / 0% for SoM; and DD's per-item correctness is far less coupled to the strongest backbone than SoM's (φ = 0.51 / 0.32 vs. 0.84 / 0.67); the SoM coupling recurs, with a different strongest model, in a newer pool with a different strongest model (φ = 0.75–0.82). We do not claim DD exceeds the OR-of-backbones upper bound; the claim is that DD uses diversity differently.
 
 The pattern is consistent with independent evidence on unguided whole-answer debate (arXiv:2605.00914, 7–8B models, plurality voting, no roles): homogeneous teams do not benefit from peer exchange, and, in that study's appendix, role-free heterogeneous teams show *negative* synergy under voting. That work explicitly lists structured-debate baselines as untested; our grid supplies them: adding roles without diversity does not help (homogeneous DD ≤ SoM), and adding diversity without local adjudication converts little of it (SoM, HD). We cite this only as consistent-with; our claims rest on our own controls.
-
-*Scope.* Both closed-form sets are near saturation, and SoM sees the option list throughout whereas DD's subtask stage does not. We scope the interaction to the published pool and mathematics settings and do not claim it is invariant to model generation (see W2).
 
 **Why these models hold these roles.** The guide assignment follows from a structural property of the protocol rather than from tuning. In SoM all three models solve independently and the outcome tracks the strongest one (per-item φ with Gemma 0.84 / 0.67). In DD the Round-0 plan is written by the guide alone and the other models enter only through local counter-candidates and adjudication; hence **the pool's strongest independent solver must hold the guide slot**, or its capability reaches the debate only piecemeal. Which model that is can be read from Table 1: on Math, Physics, and Math Pro the CoT+Gemma row is the highest single-model row (tied on Logic), and on MedBullets CoT+Gemini is; on MedQA CoT+Llama is 2 pp above the Gemini guide, which we report as the one exception. The submitted text motivated routing only by cross-family diversity and did not state this constraint explicitly; we will.
 
@@ -180,10 +178,6 @@ The reviewer's diagnosis is exactly right, and we correct the appendix as follow
 
 *Where the claim rests.* The primary inferential layer is the **cross-dataset paired analysis**, which reproduces exactly from the item-level vectors and does not depend on the scoring choices above: six paired DD−SoM differences of +4, +5, +2, +4, +7, +12 pp (mean +5.67, median +4.5), paired t = 3.96, **p = 0.011**, Cohen's d = 1.62, sign test 6/6 (p = 0.031). It is stable under either uniform SoM baseline (all SoM-3: p = 0.008; all SoM-8: p = 0.012) and, with the +12 pp MedBullets point held out, the t-test remains significant (p = 0.006, 5/5 direction) although the sign test no longer can (p = 0.0625 with five sets). Its unit is the dataset (n = 6), so it supports the cross-task claim, not any single-dataset claim. We will rewrite C.2.3 around this layer, report item-clustered intervals per dataset, keep the run-level Welch tests as supporting evidence with n = 3 stated, and report all runs on fixed denominators with unparsable or abstained outputs counted as errors. The ± column of Table 1 will be unified to a single stated convention (item-level SE or interval).
 
-### Reproducibility
-
-An anonymized repository with prompts, routing tables, per-question outputs and logs for every arm above (including the new controls), scoring scripts, and token ledgers will be linked during the discussion period. One endpoint used in the medical closed-form suite (gemini-2.0-flash-lite) has since been retired by its provider; the remaining backbones are available, and we document the replacement used in the open-domain experiments.
-
 ---
 
 ## Response to Reviewer Xcv6
@@ -202,10 +196,6 @@ Existing multi-agent debate methods let several language models each produce a c
 - **A metric glossary** for repair, recovery, mis-correction, and harm, with denominators in each caption.
 - **Plain-language summaries** at the head of each experimental section stating what is compared and what would count as a negative result.
 
-### Reproducibility
-
-The reviewer's reproducibility and software scores reflect that no code or data were available at submission. An anonymized repository with prompts, routing tables, per-question outputs, and scoring scripts—including the new controls run for this response—will be linked during the discussion period.
-
 ---
 
 ## Summary of revisions we commit to
@@ -217,4 +207,4 @@ The reviewer's reproducibility and software scores reflect that no code or data 
 5. DD-lite: in-sample label on Math Pro, pre-registered two-fold split, and zero-recalibration transfers.
 6. Statistics: Appendix C.2.3 rewritten around the cross-dataset layer with item-clustered intervals; McNemar entry withdrawn; tok/pp corrected; unified ± convention; fixed denominators.
 7. Limitations: DD's advantage is conditional on heterogeneous composition, on the strongest model holding the guide slot, on a bounded opponent/judge gap, and on unsaturated tasks; absolute numbers are from 2024–25 backbones; the preregistered frontier 2×2 study on medical hard sets is future work.
-8. Naming, MedxpertQA-R introduction, glossary, and release of code and per-question outputs.
+8. Naming, MedxpertQA-R introduction, glossary.
